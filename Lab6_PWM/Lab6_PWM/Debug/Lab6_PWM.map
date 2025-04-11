@@ -7,11 +7,17 @@ Discarded input sections
 
  .data          0x00000000        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .bss           0x00000000        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
+ .text          0x00000000        0x0 LibreriaADC.o
+ .data          0x00000000        0x0 LibreriaADC.o
+ .bss           0x00000000        0x0 LibreriaADC.o
+ .text.adc_set_channel
+                0x00000000       0x10 LibreriaADC.o
+ .text          0x00000000        0x0 LibreriaServoPWM.o
+ .data          0x00000000        0x0 LibreriaServoPWM.o
+ .bss           0x00000000        0x0 LibreriaServoPWM.o
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
- .text.adc_set_channel
-                0x00000000       0x10 main.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
@@ -45,6 +51,8 @@ Linker script and memory map
 
 Address of section .data set to 0x800100
 LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
+LOAD LibreriaADC.o
+LOAD LibreriaServoPWM.o
 LOAD main.o
 START GROUP
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a
@@ -155,7 +163,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x168
+.text           0x00000000      0x174
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -238,24 +246,24 @@ END GROUP
                 0x00000080                . = ALIGN (0x2)
  *(.text.*)
  .text.setup_adc
-                0x00000080       0x22 main.o
+                0x00000080       0x22 LibreriaADC.o
                 0x00000080                setup_adc
  .text.init_timer1
-                0x000000a2       0x28 main.o
+                0x000000a2       0x28 LibreriaServoPWM.o
                 0x000000a2                init_timer1
  .text.PWM1_set_pulse_width
-                0x000000ca       0x2e main.o
+                0x000000ca       0x3c LibreriaServoPWM.o
                 0x000000ca                PWM1_set_pulse_width
+ .text.main     0x00000106       0x12 main.o
+                0x00000106                main
  .text.__vector_21
-                0x000000f8       0x5a main.o
-                0x000000f8                __vector_21
- .text.main     0x00000152       0x12 main.o
-                0x00000152                main
-                0x00000164                . = ALIGN (0x2)
+                0x00000118       0x58 main.o
+                0x00000118                __vector_21
+                0x00000170                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000164        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x00000164                _exit
-                0x00000164                exit
+ .fini9         0x00000170        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x00000170                _exit
+                0x00000170                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -274,11 +282,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000164        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000170        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000168                _etext = .
+                0x00000174                _etext = .
 
-.data           0x00800100        0x0 load address 0x00000168
+.data           0x00800100        0x0 load address 0x00000174
                 [!provide]                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -296,8 +304,8 @@ END GROUP
  *(.bss*)
  *(COMMON)
                 [!provide]                PROVIDE (__bss_end, .)
-                0x00000168                __data_load_start = LOADADDR (.data)
-                0x00000168                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00000174                __data_load_start = LOADADDR (.data)
+                0x00000174                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800100        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -345,8 +353,10 @@ END GROUP
 
 .comment        0x00000000       0x30
  *(.comment)
- .comment       0x00000000       0x30 main.o
+ .comment       0x00000000       0x30 LibreriaADC.o
                                  0x31 (size before relaxing)
+ .comment       0x00000030       0x31 LibreriaServoPWM.o
+ .comment       0x00000030       0x31 main.o
 
 .note.gnu.avr.deviceinfo
                 0x00000000       0x40
@@ -368,42 +378,60 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0x48
+.debug_aranges  0x00000000       0x78
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x48 main.o
+                0x00000000       0x28 LibreriaADC.o
+ .debug_aranges
+                0x00000028       0x28 LibreriaServoPWM.o
+ .debug_aranges
+                0x00000050       0x28 main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0x75f
+.debug_info     0x00000000      0x867
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_info    0x000005f4      0x16b main.o
+ .debug_info    0x000005f4       0xa9 LibreriaADC.o
+ .debug_info    0x0000069d       0xc6 LibreriaServoPWM.o
+ .debug_info    0x00000763      0x104 main.o
 
-.debug_abbrev   0x00000000      0x67c
+.debug_abbrev   0x00000000      0x73f
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_abbrev  0x000005a2       0xda main.o
+ .debug_abbrev  0x000005a2       0x78 LibreriaADC.o
+ .debug_abbrev  0x0000061a       0x87 LibreriaServoPWM.o
+ .debug_abbrev  0x000006a1       0x9e main.o
 
-.debug_line     0x00000000      0x2a1
+.debug_line     0x00000000      0x3f1
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x134 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_line    0x00000134      0x16d main.o
+ .debug_line    0x00000134       0xd0 LibreriaADC.o
+ .debug_line    0x00000204       0xed LibreriaServoPWM.o
+ .debug_line    0x000002f1      0x100 main.o
 
-.debug_frame    0x00000000       0xbc
+.debug_frame    0x00000000       0xe4
  *(.debug_frame)
- .debug_frame   0x00000000       0xbc main.o
+ .debug_frame   0x00000000       0x34 LibreriaADC.o
+ .debug_frame   0x00000034       0x34 LibreriaServoPWM.o
+ .debug_frame   0x00000068       0x7c main.o
 
-.debug_str      0x00000000      0x3af
+.debug_str      0x00000000      0x3da
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_str     0x00000208      0x1a7 main.o
-                                0x1e9 (size before relaxing)
+ .debug_str     0x00000208      0x163 LibreriaADC.o
+                                0x19f (size before relaxing)
+ .debug_str     0x0000036b       0x48 LibreriaServoPWM.o
+                                0x1b8 (size before relaxing)
+ .debug_str     0x000003b3       0x27 main.o
+                                0x1c5 (size before relaxing)
 
-.debug_loc      0x00000000      0x12c
+.debug_loc      0x00000000      0x12a
  *(.debug_loc)
- .debug_loc     0x00000000      0x12c main.o
+ .debug_loc     0x00000000       0x21 LibreriaADC.o
+ .debug_loc     0x00000021       0x26 LibreriaServoPWM.o
+ .debug_loc     0x00000047       0xe3 main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -423,9 +451,11 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0x38
+.debug_ranges   0x00000000       0x48
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x38 main.o
+ .debug_ranges  0x00000000       0x18 LibreriaADC.o
+ .debug_ranges  0x00000018       0x18 LibreriaServoPWM.o
+ .debug_ranges  0x00000030       0x18 main.o
 
 .debug_macro
  *(.debug_macro)
