@@ -145,6 +145,9 @@
     <Compile Include="LibreriaServoPWM.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="LibreriaServoPWM2.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
