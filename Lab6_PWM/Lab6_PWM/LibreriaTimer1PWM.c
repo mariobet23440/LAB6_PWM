@@ -1,11 +1,15 @@
 /*
- * LibreriaServoPWM.c
+ * LibreriaTimer1PWM.c - LIBRERIA PWM CON TIMER1 PARA SERVOMOTORES
  *
- * Created: 11/04/2025 13:12:41
- *  Author: mario
+ * Created: 11/04/2025 18:32:51
+ *  Author: Mario Alejandro Betancourt Franco
+ * Descripción: Librería para PWM en TIMER1 con soporte para
+ * servomotores. Permite usar OC1A y OC1B con una frecuencia
+ * de 50 Hz, con un control del ciclo de trabajo adecuado para
+ * servomotores SG90.
  */ 
 
-#include "LibreriaServoPWM.h"
+#include "LibreriaTimer1PWM.h"
 
 void init_timer1(void)
 {
@@ -17,14 +21,14 @@ void init_timer1(void)
 
 // Establecer ancho de pulso para PWM1
 // La entrada value debe ser un número de 0 a 255
-void PWM1_set_pulse_width(uint16_t value)
+void TIMER1_PWM1_set_servo_PW(uint16_t value)
 {
 	uint16_t ticks = (4000/256) * value + 1000;	// Función empírica para giro de 180°
 	if (ticks > ICR1) ticks = ICR1;			// Truncar ticks a ICR1 si se pasan del valor
 	OCR1A = ticks;							// Ajustar el valor de OCR1A
 }
 
-void PWM2_set_pulse_width(uint16_t value)
+void TIMER1_PWM2_set_servo_PW(uint16_t value)
 {
 	uint16_t ticks = (4000/256) * value + 1000;	// Función empírica para giro de 180°
 	if (ticks > ICR1) ticks = ICR1;			// Truncar ticks a ICR1 si se pasan del valor

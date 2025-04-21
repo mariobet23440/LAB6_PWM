@@ -139,13 +139,16 @@
     <Compile Include="LibreriaADC.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="LibreriaServoPWM.c">
+    <Compile Include="LibreriaTimer1PWM.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="LibreriaServoPWM.h">
+    <Compile Include="LibreriaTimer1PWM.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="LibreriaServoPWM2.c">
+    <Compile Include="LibreriaTimer2PWM.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="LibreriaTimer2PWM.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">

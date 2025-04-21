@@ -4,9 +4,9 @@
 
 LibreriaADC.c
 
-LibreriaServoPWM.c
+LibreriaTimer1PWM.c
 
-LibreriaServoPWM2.c
+LibreriaTimer2PWM.c
 
 main.c
 

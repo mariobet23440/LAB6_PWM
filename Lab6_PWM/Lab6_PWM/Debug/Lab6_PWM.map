@@ -12,15 +12,12 @@ Discarded input sections
  .text          0x00000000        0x0 LibreriaADC.o
  .data          0x00000000        0x0 LibreriaADC.o
  .bss           0x00000000        0x0 LibreriaADC.o
- .text          0x00000000        0x0 LibreriaServoPWM.o
- .data          0x00000000        0x0 LibreriaServoPWM.o
- .bss           0x00000000        0x0 LibreriaServoPWM.o
- .text          0x00000000        0x0 LibreriaServoPWM2.o
- .data          0x00000000        0x0 LibreriaServoPWM2.o
- .bss           0x00000000        0x0 LibreriaServoPWM2.o
- .debug_line    0x00000000        0x0 LibreriaServoPWM2.o
- .debug_str     0x00000000      0x114 LibreriaServoPWM2.o
- .comment       0x00000000       0x31 LibreriaServoPWM2.o
+ .text          0x00000000        0x0 LibreriaTimer1PWM.o
+ .data          0x00000000        0x0 LibreriaTimer1PWM.o
+ .bss           0x00000000        0x0 LibreriaTimer1PWM.o
+ .text          0x00000000        0x0 LibreriaTimer2PWM.o
+ .data          0x00000000        0x0 LibreriaTimer2PWM.o
+ .bss           0x00000000        0x0 LibreriaTimer2PWM.o
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
@@ -74,8 +71,8 @@ Linker script and memory map
 Address of section .data set to 0x800100
 LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
 LOAD LibreriaADC.o
-LOAD LibreriaServoPWM.o
-LOAD LibreriaServoPWM2.o
+LOAD LibreriaTimer1PWM.o
+LOAD LibreriaTimer2PWM.o
 LOAD main.o
 START GROUP
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a
@@ -186,7 +183,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x222
+.text           0x00000000      0x276
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -276,30 +273,39 @@ END GROUP
                 0x000000b2       0x10 LibreriaADC.o
                 0x000000b2                adc_set_channel
  .text.init_timer1
-                0x000000c2       0x28 LibreriaServoPWM.o
+                0x000000c2       0x28 LibreriaTimer1PWM.o
                 0x000000c2                init_timer1
- .text.PWM1_set_pulse_width
-                0x000000ea       0x32 LibreriaServoPWM.o
-                0x000000ea                PWM1_set_pulse_width
- .text.PWM2_set_pulse_width
-                0x0000011c       0x32 LibreriaServoPWM.o
-                0x0000011c                PWM2_set_pulse_width
+ .text.TIMER1_PWM1_set_servo_PW
+                0x000000ea       0x32 LibreriaTimer1PWM.o
+                0x000000ea                TIMER1_PWM1_set_servo_PW
+ .text.TIMER1_PWM2_set_servo_PW
+                0x0000011c       0x32 LibreriaTimer1PWM.o
+                0x0000011c                TIMER1_PWM2_set_servo_PW
+ .text.init_timer2
+                0x0000014e       0x22 LibreriaTimer2PWM.o
+                0x0000014e                init_timer2
+ .text.TIMER2_PWM1_set_duty
+                0x00000170        0x6 LibreriaTimer2PWM.o
+                0x00000170                TIMER2_PWM1_set_duty
+ .text.TIMER2_PWM2_set_duty
+                0x00000176        0x6 LibreriaTimer2PWM.o
+                0x00000176                TIMER2_PWM2_set_duty
  .text.init_timer0
-                0x0000014e       0x14 main.o
-                0x0000014e                init_timer0
- .text.main     0x00000162       0x18 main.o
-                0x00000162                main
+                0x0000017c       0x14 main.o
+                0x0000017c                init_timer0
+ .text.main     0x00000190       0x1c main.o
+                0x00000190                main
  .text.__vector_16
-                0x0000017a       0x2c main.o
-                0x0000017a                __vector_16
+                0x000001ac       0x2c main.o
+                0x000001ac                __vector_16
  .text.__vector_21
-                0x000001a6       0x78 main.o
-                0x000001a6                __vector_21
-                0x0000021e                . = ALIGN (0x2)
+                0x000001d8       0x9a main.o
+                0x000001d8                __vector_21
+                0x00000272                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000021e        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x0000021e                _exit
-                0x0000021e                exit
+ .fini9         0x00000272        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x00000272                _exit
+                0x00000272                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -318,11 +324,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000021e        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000272        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000222                _etext = .
+                0x00000276                _etext = .
 
-.data           0x00800100        0x0 load address 0x00000222
+.data           0x00800100        0x0 load address 0x00000276
                 [!provide]                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -343,8 +349,8 @@ END GROUP
                 0x00800100                current_channel
  *(COMMON)
                 0x00800101                PROVIDE (__bss_end, .)
-                0x00000222                __data_load_start = LOADADDR (.data)
-                0x00000222                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00000276                __data_load_start = LOADADDR (.data)
+                0x00000276                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800101        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -394,7 +400,8 @@ END GROUP
  *(.comment)
  .comment       0x00000000       0x30 LibreriaADC.o
                                  0x31 (size before relaxing)
- .comment       0x00000030       0x31 LibreriaServoPWM.o
+ .comment       0x00000030       0x31 LibreriaTimer1PWM.o
+ .comment       0x00000030       0x31 LibreriaTimer2PWM.o
  .comment       0x00000030       0x31 main.o
 
 .note.gnu.avr.deviceinfo
@@ -417,60 +424,68 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0x90
+.debug_aranges  0x00000000       0xc0
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x28 LibreriaADC.o
  .debug_aranges
-                0x00000028       0x30 LibreriaServoPWM.o
+                0x00000028       0x30 LibreriaTimer1PWM.o
  .debug_aranges
-                0x00000058       0x38 main.o
+                0x00000058       0x30 LibreriaTimer2PWM.o
+ .debug_aranges
+                0x00000088       0x38 main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0x929
+.debug_info     0x00000000      0xa63
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_info    0x000005f4       0xa9 LibreriaADC.o
- .debug_info    0x0000069d      0x102 LibreriaServoPWM.o
- .debug_info    0x0000079f      0x18a main.o
+ .debug_info    0x0000069d      0x102 LibreriaTimer1PWM.o
+ .debug_info    0x0000079f       0xcf LibreriaTimer2PWM.o
+ .debug_info    0x0000086e      0x1f5 main.o
 
-.debug_abbrev   0x00000000      0x7c5
+.debug_abbrev   0x00000000      0x857
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_abbrev  0x000005a2       0x78 LibreriaADC.o
- .debug_abbrev  0x0000061a       0xa1 LibreriaServoPWM.o
- .debug_abbrev  0x000006bb      0x10a main.o
+ .debug_abbrev  0x0000061a       0xa1 LibreriaTimer1PWM.o
+ .debug_abbrev  0x000006bb       0x92 LibreriaTimer2PWM.o
+ .debug_abbrev  0x0000074d      0x10a main.o
 
-.debug_line     0x00000000      0x495
+.debug_line     0x00000000      0x5be
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x134 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_line    0x00000134       0xd0 LibreriaADC.o
- .debug_line    0x00000204      0x11b LibreriaServoPWM.o
- .debug_line    0x0000031f      0x176 main.o
+ .debug_line    0x00000204      0x11c LibreriaTimer1PWM.o
+ .debug_line    0x00000320       0xec LibreriaTimer2PWM.o
+ .debug_line    0x0000040c      0x1b2 main.o
 
-.debug_frame    0x00000000      0x130
+.debug_frame    0x00000000      0x178
  *(.debug_frame)
  .debug_frame   0x00000000       0x34 LibreriaADC.o
- .debug_frame   0x00000034       0x44 LibreriaServoPWM.o
- .debug_frame   0x00000078       0xb8 main.o
+ .debug_frame   0x00000034       0x44 LibreriaTimer1PWM.o
+ .debug_frame   0x00000078       0x44 LibreriaTimer2PWM.o
+ .debug_frame   0x000000bc       0xbc main.o
 
-.debug_str      0x00000000      0x417
+.debug_str      0x00000000      0x46f
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_str     0x00000208      0x163 LibreriaADC.o
                                 0x19f (size before relaxing)
- .debug_str     0x0000036b       0x5d LibreriaServoPWM.o
-                                0x1cd (size before relaxing)
- .debug_str     0x000003c8       0x4f main.o
-                                0x209 (size before relaxing)
+ .debug_str     0x0000036b       0x66 LibreriaTimer1PWM.o
+                                0x1d6 (size before relaxing)
+ .debug_str     0x000003d1       0x4f LibreriaTimer2PWM.o
+                                0x1bf (size before relaxing)
+ .debug_str     0x00000420       0x4f main.o
+                                0x247 (size before relaxing)
 
-.debug_loc      0x00000000      0x1b0
+.debug_loc      0x00000000      0x1b2
  *(.debug_loc)
  .debug_loc     0x00000000       0x21 LibreriaADC.o
- .debug_loc     0x00000021       0x50 LibreriaServoPWM.o
- .debug_loc     0x00000071      0x13f main.o
+ .debug_loc     0x00000021       0x50 LibreriaTimer1PWM.o
+ .debug_loc     0x00000071      0x141 main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -490,11 +505,12 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0x60
+.debug_ranges   0x00000000       0x80
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x18 LibreriaADC.o
- .debug_ranges  0x00000018       0x20 LibreriaServoPWM.o
- .debug_ranges  0x00000038       0x28 main.o
+ .debug_ranges  0x00000018       0x20 LibreriaTimer1PWM.o
+ .debug_ranges  0x00000038       0x20 LibreriaTimer2PWM.o
+ .debug_ranges  0x00000058       0x28 main.o
 
 .debug_macro
  *(.debug_macro)
