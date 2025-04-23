@@ -1,22 +1,18 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "LibreriaTimer1PWM.h"
-#include "LibreriaTimer2PWM.h"
 #include "LibreriaADC.h"
 
+// VARIABLES GLOBALES
 volatile uint8_t current_channel = 0; // Comenzar en ADC0
+static uint8_t manual_pwm_pin = DDD3;
 
-// TIMER 0 - Disparo de conversión
-void init_timer0(void)
-{
-	// Operamos el temporizador en modo NORMAL
-	TCCR0B |= (1 << CS01) | (1 << CS00);	// Prescaler de 64
-	TCNT0 = 0;
-	
-	// Habilitar interrupciones por overflow de TIMER0
-	TIMSK0 |= (1 << TOIE0);
-}
+// PROTOTIPOS DE FUNCIONES
+void init_timer0(void);
+void init_timer2_manualpwm(void);
+void timer2_set_PW(uint8_t value);
 
+// MAINLOOP
 int main(void)
 {
 	cli();
@@ -24,7 +20,7 @@ int main(void)
 	setup_adc();  // Configurar ADC
 	init_timer0();
 	init_timer1();  // Inicializar Timer1 en modo Fast PWM
-	init_timer2();
+	init_timer2_manualpwm();
 	sei();  // Habilitar interrupciones globales
 
 	while (1)
@@ -35,6 +31,37 @@ int main(void)
 	return 0;
 }
 
+// FUNCIONES NO DE INTERRUPCIÓN
+// Inicialización de TIMER 0 - Disparo de conversión
+void init_timer0(void)
+{
+	// Operamos el temporizador en modo NORMAL
+	TCCR0B |= (1 << CS01) | (1 << CS00);	// Prescaler de 64
+	TCNT0 = 0;
+	
+	// Habilitar interrupciones por overflow de TIMER0
+	TIMSK0 |= (1 << TOIE0);
+}
+
+// Inicialización de TIMER2 - PWM Manual
+void init_timer2_manualpwm(void)
+{
+	// Modo Normal, TOP = 255
+	TCCR2B |= (1 << CS21); // Prescaler de 8
+	
+	// Habilitación de interrupciones por overflow de timer y output compare match
+	TIMSK2 |= (1 << OCIE2A) | (1 << TOIE2);
+	
+	DDRD |= (1 << manual_pwm_pin); // Salida de PWM
+}
+
+// Establecer ancho de pulso en TIMER2
+void timer2_set_PW(uint8_t value)
+{
+	OCR2A = 255 - value;
+}
+
+// RUTINAS DE INTERRUPCIÓN
 // Timer0 Overflow - dispara conversión ADC
 ISR(TIMER0_OVF_vect)
 {
@@ -63,10 +90,25 @@ ISR(ADC_vect)
 		break;
 		
 		case 2:
-		TIMER2_PWM2_set_duty(adc_value); // PWM para canal 2 (OC2B)
-		TIMER2_PWM1_set_duty(adc_value); // PWM para canal 2 (OC1B)
+		timer2_set_PW(adc_value);
 		current_channel = 0;
 		adc_set_channel(0);
 		break;
 	}
+}
+
+// Cuando ocurra un overflow de TIMER2 - Apagar 
+ISR(TIMER2_OVF_vect)
+{
+	uint8_t temp = PIND;
+	temp = temp ^ (1 << manual_pwm_pin); 
+	PORTD = temp;
+}
+
+// Cuando ocurra un Output Compare Match - Encender
+ISR(TIMER2_COMPA_vect)
+{
+	uint8_t temp = PIND;
+	temp |= (1 << manual_pwm_pin);
+	PORTD = temp;
 }
