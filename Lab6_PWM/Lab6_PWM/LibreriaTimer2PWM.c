@@ -10,28 +10,23 @@
 
 #include "LibreriaTimer2PWM.h"
 
-void init_timer2(void)
+// Inicialización de TIMER2 - PWM Manual
+void init_timer2_manualpwm(void)
 {
-	// Modo Fast PWM, TOP = 255, salida no invertida en OC2A y OC2B
-	TCCR2A |= (1 << COM2A1) | (1 << COM2B1) | (1 << WGM21) | (1 << WGM20);
+	// Modo Normal, TOP = 255
 	TCCR2B |= (1 << CS21); // Prescaler de 8
-
-	DDRB |= (1 << DDB3); // PB3 como salida (OC2A)
-	DDRD |= (1 << DDD3); // PD3 como salida (OC2B)
+	
+	// Habilitación de interrupciones por overflow de timer y output compare match
+	TIMSK2 |= (1 << OCIE2A) | (1 << TOIE2);
+	
+	DDRD |= (1 << manual_pwm_pin); // Salida de PWM
 }
 
-// Establecer duty cycle para OC2A (PWM1), valor de 0 a 255
-void TIMER2_PWM1_set_duty(uint8_t value)
+// Establecer ancho de pulso en TIMER2
+void timer2_set_PW(uint8_t value)
 {
-	OCR2A = value;
+	OCR2A = 255 - value;
 }
-
-// Establecer duty cycle para OC2B (PWM2), valor de 0 a 255
-void TIMER2_PWM2_set_duty(uint8_t value)
-{
-	OCR2B = value;
-}
-
 
 
 

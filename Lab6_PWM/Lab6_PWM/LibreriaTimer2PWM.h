@@ -10,13 +10,8 @@
 #define LIBRERIATIMER2PWM_H_
 
 #include <avr/io.h>
-void init_timer2(void);
-
-// Establecer duty cycle para OC2A (PWM1), valor de 0 a 255
-void TIMER2_PWM1_set_duty(uint8_t value);
-
-// Establecer duty cycle para OC2B (PWM2), valor de 0 a 255
-void TIMER2_PWM2_set_duty(uint8_t value);
+void init_timer2_manualpwm(void);
+void timer2_set_PW(uint8_t value);
 
 
 #endif /* LIBRERIATIMER2PWM_H_ */

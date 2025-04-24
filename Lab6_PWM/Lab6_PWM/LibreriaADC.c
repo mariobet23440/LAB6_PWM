@@ -9,7 +9,7 @@
 
 void setup_adc(void)
 {
-	ADMUX |= (1 << ADLAR) | (1 << REFS0);  // Ajuste a la izquierda (ADLAR), Referencia AVCC (REFS0)
+	ADMUX |= (1 << ADLAR) | (1 << REFS0);   // Ajuste a la izquierda (ADLAR), Referencia AVCC (REFS0)
 	ADCSRA |= (1 << ADEN) | (1 << ADIE);    // Habilitar ADC y habilitar interrupción ADC
 	ADCSRA |= (1 << ADPS2) | (1 << ADPS1);  // Prescaler de 64
 	ADCSRA |= (1 << ADSC);					// Iniciar conversión

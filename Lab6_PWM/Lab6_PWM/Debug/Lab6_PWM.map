@@ -312,11 +312,11 @@ END GROUP
                 0x000001ce       0x8a main.o
                 0x000001ce                __vector_21
  .text.__vector_9
-                0x00000258       0x24 main.o
+                0x00000258       0x1e main.o
                 0x00000258                __vector_9
  .text.__vector_7
-                0x0000027c       0x1e main.o
-                0x0000027c                __vector_7
+                0x00000276       0x24 main.o
+                0x00000276                __vector_7
                 0x0000029a                . = ALIGN (0x2)
  *(.fini9)
  .fini9         0x0000029a        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)

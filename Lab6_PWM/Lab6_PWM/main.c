@@ -2,6 +2,7 @@
 #include <avr/interrupt.h>
 #include "LibreriaTimer1PWM.h"
 #include "LibreriaADC.h"
+#include "LibreriaTimer2PWM.h"
 
 // VARIABLES GLOBALES
 volatile uint8_t current_channel = 0; // Comenzar en ADC0
@@ -41,24 +42,6 @@ void init_timer0(void)
 	
 	// Habilitar interrupciones por overflow de TIMER0
 	TIMSK0 |= (1 << TOIE0);
-}
-
-// Inicialización de TIMER2 - PWM Manual
-void init_timer2_manualpwm(void)
-{
-	// Modo Normal, TOP = 255
-	TCCR2B |= (1 << CS21); // Prescaler de 8
-	
-	// Habilitación de interrupciones por overflow de timer y output compare match
-	TIMSK2 |= (1 << OCIE2A) | (1 << TOIE2);
-	
-	DDRD |= (1 << manual_pwm_pin); // Salida de PWM
-}
-
-// Establecer ancho de pulso en TIMER2
-void timer2_set_PW(uint8_t value)
-{
-	OCR2A = 255 - value;
 }
 
 // RUTINAS DE INTERRUPCIÓN
@@ -101,7 +84,7 @@ ISR(ADC_vect)
 ISR(TIMER2_OVF_vect)
 {
 	uint8_t temp = PIND;
-	temp = temp ^ (1 << manual_pwm_pin); 
+	temp |= (1 << manual_pwm_pin);
 	PORTD = temp;
 }
 
@@ -109,6 +92,6 @@ ISR(TIMER2_OVF_vect)
 ISR(TIMER2_COMPA_vect)
 {
 	uint8_t temp = PIND;
-	temp |= (1 << manual_pwm_pin);
+	temp = temp ^ (1 << manual_pwm_pin);
 	PORTD = temp;
 }

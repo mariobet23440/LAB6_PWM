@@ -40,7 +40,7 @@ Disassembly of section .text:
   10:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   14:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   18:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
-  1c:	0c 94 3e 01 	jmp	0x27c	; 0x27c <__vector_7>
+  1c:	0c 94 3b 01 	jmp	0x276	; 0x276 <__vector_7>
   20:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   24:	0c 94 2c 01 	jmp	0x258	; 0x258 <__vector_9>
   28:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
@@ -93,7 +93,7 @@ Disassembly of section .text:
 
 void setup_adc(void)
 {
-	ADMUX |= (1 << ADLAR) | (1 << REFS0);  // Ajuste a la izquierda (ADLAR), Referencia AVCC (REFS0)
+	ADMUX |= (1 << ADLAR) | (1 << REFS0);   // Ajuste a la izquierda (ADLAR), Referencia AVCC (REFS0)
   90:	ec e7       	ldi	r30, 0x7C	; 124
   92:	f0 e0       	ldi	r31, 0x00	; 0
   94:	80 81       	ld	r24, Z
@@ -432,40 +432,40 @@ ISR(TIMER2_OVF_vect)
  25e:	0f 92       	push	r0
  260:	11 24       	eor	r1, r1
  262:	8f 93       	push	r24
- 264:	9f 93       	push	r25
 	uint8_t temp = PIND;
- 266:	99 b1       	in	r25, 0x09	; 9
-	temp = temp ^ (1 << manual_pwm_pin); 
- 268:	88 e0       	ldi	r24, 0x08	; 8
- 26a:	89 27       	eor	r24, r25
+ 264:	89 b1       	in	r24, 0x09	; 9
+	temp |= (1 << manual_pwm_pin);
+ 266:	88 60       	ori	r24, 0x08	; 8
 	PORTD = temp;
- 26c:	8b b9       	out	0x0b, r24	; 11
+ 268:	8b b9       	out	0x0b, r24	; 11
 }
- 26e:	9f 91       	pop	r25
- 270:	8f 91       	pop	r24
- 272:	0f 90       	pop	r0
- 274:	0f be       	out	0x3f, r0	; 63
- 276:	0f 90       	pop	r0
- 278:	1f 90       	pop	r1
- 27a:	18 95       	reti
+ 26a:	8f 91       	pop	r24
+ 26c:	0f 90       	pop	r0
+ 26e:	0f be       	out	0x3f, r0	; 63
+ 270:	0f 90       	pop	r0
+ 272:	1f 90       	pop	r1
+ 274:	18 95       	reti
 
-0000027c <__vector_7>:
+00000276 <__vector_7>:
 
 // Cuando ocurra un Output Compare Match - Encender
 ISR(TIMER2_COMPA_vect)
 {
- 27c:	1f 92       	push	r1
- 27e:	0f 92       	push	r0
- 280:	0f b6       	in	r0, 0x3f	; 63
- 282:	0f 92       	push	r0
- 284:	11 24       	eor	r1, r1
- 286:	8f 93       	push	r24
+ 276:	1f 92       	push	r1
+ 278:	0f 92       	push	r0
+ 27a:	0f b6       	in	r0, 0x3f	; 63
+ 27c:	0f 92       	push	r0
+ 27e:	11 24       	eor	r1, r1
+ 280:	8f 93       	push	r24
+ 282:	9f 93       	push	r25
 	uint8_t temp = PIND;
- 288:	89 b1       	in	r24, 0x09	; 9
-	temp |= (1 << manual_pwm_pin);
- 28a:	88 60       	ori	r24, 0x08	; 8
+ 284:	99 b1       	in	r25, 0x09	; 9
+	temp = temp ^ (1 << manual_pwm_pin);
+ 286:	88 e0       	ldi	r24, 0x08	; 8
+ 288:	89 27       	eor	r24, r25
 	PORTD = temp;
- 28c:	8b b9       	out	0x0b, r24	; 11
+ 28a:	8b b9       	out	0x0b, r24	; 11
+ 28c:	9f 91       	pop	r25
  28e:	8f 91       	pop	r24
  290:	0f 90       	pop	r0
  292:	0f be       	out	0x3f, r0	; 63
